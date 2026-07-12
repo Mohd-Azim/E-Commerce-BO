@@ -27,7 +27,7 @@ import {
   Package,
   BarChart3,
 } from 'lucide-react';
-import { useSidebar } from '@/stores/appStore';
+import { useAppStore } from '@/stores/appStore';
 
 interface NavItem {
   label: string;
@@ -86,7 +86,8 @@ const navItems: NavItem[] = [
 ];
 
 export const Sidebar: React.FC = () => {
-  const { open, toggle } = useSidebar();
+  const open = useAppStore((state) => state.sidebarOpen);
+  const toggle = useAppStore((state) => state.toggleSidebar);
   const pathname = usePathname();
 
   const isActive = (href: string) => pathname.startsWith(href);

@@ -114,16 +114,3 @@ export const useAppStore = create<AppState>((set) => ({
       modals: { ...state.modals, [modalId]: !state.modals[modalId] },
     })),
 }));
-
-// Export selectors for performance
-export const useTheme = () => useAppStore((state) => state.theme);
-export const useSetTheme = () => useAppStore((state) => state.setTheme);
-export const useToggleTheme = () => useAppStore((state) => state.toggleTheme);
-
-export const useSidebar = () => useAppStore((state) => ({ open: state.sidebarOpen, toggle: state.toggleSidebar }));
-export const useUser = () => useAppStore((state) => state.user);
-export const useNotifications = () => useAppStore((state) => state.notifications);
-export const useAddNotification = () => useAppStore((state) => state.addNotification);
-export const useFilters = () => useAppStore((state) => ({ filters: state.filters, setFilters: state.setFilters }));
-export const useSearchQuery = () => useAppStore((state) => state.searchQuery);
-export const useSetSearchQuery = () => useAppStore((state) => state.setSearchQuery);

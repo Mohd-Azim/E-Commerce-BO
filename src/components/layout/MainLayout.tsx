@@ -17,7 +17,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const sidebarOpen = useAppStore((state) => state.sidebarOpen);
 
   useEffect(() => {
-    // Initialize theme from localStorage on mount
+    // Initialize theme from localStorage on mount only
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
       if (savedTheme && savedTheme !== theme) {

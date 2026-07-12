@@ -50,8 +50,11 @@ export default function RevenuePage() {
               <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                 Total Revenue
               </Typography>
-              <Typography variant="h5" sx={{ fontWeight: 700, color: 'success.main' }}>
+              <Typography variant="h5" sx={{ fontWeight: 700, color: 'success.main', mb: 1 }}>
                 ${(metrics.totalRevenue / 1000).toFixed(1)}K
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'success.main', fontWeight: 600 }}>
+                +{metrics.revenueGrowth.toFixed(1)}% this month
               </Typography>
             </CardContent>
           </Card>
@@ -62,8 +65,11 @@ export default function RevenuePage() {
               <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                 Avg Order Value
               </Typography>
-              <Typography variant="h5" sx={{ fontWeight: 700 }}>
+              <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
                 ${(metrics.totalRevenue / metrics.totalOrders).toFixed(0)}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600 }}>
+                From {metrics.totalOrders} orders
               </Typography>
             </CardContent>
           </Card>
@@ -74,8 +80,11 @@ export default function RevenuePage() {
               <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                 Monthly Growth
               </Typography>
-              <Typography variant="h5" sx={{ fontWeight: 700, color: 'primary.main' }}>
+              <Typography variant="h5" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
                 +{metrics.revenueGrowth.toFixed(1)}%
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'primary.main', fontWeight: 600 }}>
+                vs last month
               </Typography>
             </CardContent>
           </Card>
@@ -84,59 +93,113 @@ export default function RevenuePage() {
           <Card sx={{ borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
             <CardContent>
               <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
-                Orders
+                Total Orders
               </Typography>
-              <Typography variant="h5" sx={{ fontWeight: 700 }}>
+              <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
                 {metrics.totalOrders}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600 }}>
+                All time
               </Typography>
             </CardContent>
           </Card>
         </Grid>
       </Grid>
 
-      {/* Revenue Trend */}
+      {/* Desktop Layout - Charts */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
+        {/* Revenue Trend - Full Width */}
         <Grid item xs={12}>
           <RevenueChart />
         </Grid>
-      </Grid>
 
-      {/* Revenue Breakdown */}
-      <Card sx={{ borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
-        <CardContent>
-          <Typography variant="h6" sx={{ fontWeight: 700, mb: 3 }}>
-            Revenue by Category
-          </Typography>
-          {revenueBreakdown.map((item) => (
-            <Box key={item.category} sx={{ mb: 3 }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                  {item.category}
-                </Typography>
-                <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                  ${(item.amount / 1000).toFixed(1)}K ({item.percentage}%)
-                </Typography>
+        {/* Revenue Breakdown - Left Side */}
+        <Grid item xs={12} md={8}>
+          <Card sx={{ borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
+            <CardContent sx={{ p: 3 }}>
+              <Typography variant="h6" sx={{ fontWeight: 700, mb: 3 }}>
+                Revenue by Category
+              </Typography>
+              {revenueBreakdown.map((item, index) => (
+                <Box key={item.category} sx={{ mb: 3 }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                    <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                      {item.category}
+                    </Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                      ${(item.amount / 1000).toFixed(1)}K ({item.percentage}%)
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      height: 8,
+                      borderRadius: 4,
+                      backgroundColor: 'action.hover',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        height: '100%',
+                        width: `${item.percentage}%`,
+                        backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'][index],
+                      }}
+                    />
+                  </Box>
+                </Box>
+              ))}
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Summary Stats - Right Side */}
+        <Grid item xs={12} md={4}>
+          <Card sx={{ borderRadius: 2, border: '1px solid', borderColor: 'divider', height: '100%' }}>
+            <CardContent sx={{ p: 3 }}>
+              <Typography variant="h6" sx={{ fontWeight: 700, mb: 3 }}>
+                Summary
+              </Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+                <Box>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5 }}>
+                    Highest Category
+                  </Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                    {revenueBreakdown[0].category}
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }}>
+                    {revenueBreakdown[0].percentage}% of revenue
+                  </Typography>
+                </Box>
+                <Box sx={{ borderTop: '1px solid', borderColor: 'divider', py: 2 }} />
+                <Box>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5 }}>
+                    Return Rate
+                  </Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                    {metrics.returnsRate.toFixed(2)}%
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'error.main', mt: 0.5 }}>
+                    Below average
+                  </Typography>
+                </Box>
+                <Box sx={{ borderTop: '1px solid', borderColor: 'divider', py: 2 }} />
+                <Box>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5 }}>
+                    Customer Count
+                  </Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                    {metrics.totalCustomers}
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'success.main', mt: 0.5 }}>
+                    Active customers
+                  </Typography>
+                </Box>
               </Box>
-              <Box
-                sx={{
-                  height: 8,
-                  borderRadius: 4,
-                  backgroundColor: 'action.hover',
-                  overflow: 'hidden',
-                }}
-              >
-                <Box
-                  sx={{
-                    height: '100%',
-                    width: `${item.percentage}%`,
-                    backgroundColor: '#3b82f6',
-                  }}
-                />
-              </Box>
-            </Box>
-          ))}
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
     </Box>
   );
 }

@@ -16,14 +16,14 @@ import {
   Typography,
 } from '@mui/material';
 import { Search, Bell, Settings, LogOut, Sun, Moon } from 'lucide-react';
-import { useAppStore, useTheme, useToggleTheme } from '@/stores/appStore';
+import { useAppStore } from '@/stores/appStore';
 import { mockDemoUser } from '@/mock/generators';
 
 export const TopBar: React.FC = () => {
   const user = useAppStore((state) => state.user) || mockDemoUser;
   const notifications = useAppStore((state) => state.notifications);
-  const theme = useTheme();
-  const toggleTheme = useToggleTheme();
+  const theme = useAppStore((state) => state.theme);
+  const toggleTheme = useAppStore((state) => state.toggleTheme);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
